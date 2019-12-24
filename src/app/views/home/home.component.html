@@ -1,0 +1,22 @@
+<div class="example-container">
+
+    <mat-form-field>
+        <input [formControl]="name" matInput placeholder="Name" [(ngModel)]="user.name" required />
+    </mat-form-field>
+
+    <mat-form-field>
+        <input [formControl]="password" matInput placeholder="Password" [(ngModel)]="user.password" required />
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select [formControl]="gender" [(value)]="selected" [(ngModel)]="user.gender" placeholder="Gender">
+         <mat-option>I don't want say</mat-option>
+            <mat-option value="female">Female</mat-option>
+            <mat-option value="male">Male</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-button color="primary" (click)="save()"> Save
+    </button>
+
+</div>
