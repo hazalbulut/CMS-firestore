@@ -1,9 +1,25 @@
 <mat-sidenav-container class="example-container">
 
-    <mat-sidenav #side opened [mode]="checkMode">Start content</mat-sidenav>
+    <mat-sidenav #side opened [mode]="checkMode">
+
+        <mat-toolbar>Contacts</mat-toolbar>
+        <mat-nav-list>
+            <mat-list-item *ngFor="let user of users | async">
+
+                <!-- <a matLine [routerLink]="['/user-card', user.id]"> {{user.name}}</a> -->
+                <a matLine routerLink="user-card/{{user.id}}"> {{user.name}}</a>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
 
     <div class="example-sidenav-content">
-        <mat-toolbar>My App</mat-toolbar>
+        <div class="toolbar-header">
+            <mat-toolbar>Tiko </mat-toolbar>
+            <button type="button" mat-button routerLink="/">
+                Kişi ekle
+            </button>
+        </div>
+
 
         <router-outlet></router-outlet>
 

@@ -14,3 +14,8 @@
   .example-sidenav {
     padding: 20px;
   }
+  .toolbar-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }

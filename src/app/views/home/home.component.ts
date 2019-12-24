@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { NewContactDialogComponent } from 'src/app/components/new-contact-dialog/new-contact-dialog.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-home',
@@ -32,46 +31,18 @@ export class HomeComponent implements OnInit {
     public gender = new FormControl('', [Validators.required]);
 
 
-    constructor(public dialog: MatDialog) {
-        this.dataStore = { users: [] };
-        this._users = new BehaviorSubject<User[]>([]);
+    constructor(public dialog: MatDialog, public userService: UserService) {
     }
 
     public ngOnInit() {
-
+        this.userService.loadAll()
     }
 
 
     public save() {
-        this.addUser(this.user);
-        this.openDialog();
-        console.log('tum data', this.dataStore.users);
+        this.userService.addUser(this.user);
+        this.userService.openDialog();
 
     }
-
-    public addUser(user: User): Promise<User> {
-        let temp_user = new User();
-        temp_user.name = user.name;
-        temp_user.password = user.password;
-        temp_user.gender = user.gender;
-        temp_user.id = this.dataStore.users.length + 1;
-
-        return new Promise((resolver, reject) => {
-            this.dataStore.users.push(temp_user);
-            this._users.next(Object.assign({}, this.dataStore).users);
-            resolver(temp_user);
-
-        });
-    }
-    public openDialog(): void {
-        let temp_data: User;
-        temp_data = this.dataStore.users[this.dataStore.users.length - 1];
-        console.log('son data', temp_data);
-        const dialogRef = this.dialog.open(NewContactDialogComponent, {
-            width: '250px',
-            data: temp_data
-        });
-        dialogRef.afterClosed().subscribe();
-    }
-
 }
+

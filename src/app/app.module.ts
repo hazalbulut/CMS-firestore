@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './shared/material.module';
 import { HomeModule } from './views/home/home.module';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { UserCardModule } from './views/user-card/user-card.module';
 
 
 @NgModule({
@@ -16,9 +18,11 @@ import { CommonModule } from '@angular/common';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        RouterModule,
         MaterialModule,
         HomeModule,
         CommonModule,
+        UserCardModule,
         AppRoutingModule
     ],
     providers: [],
