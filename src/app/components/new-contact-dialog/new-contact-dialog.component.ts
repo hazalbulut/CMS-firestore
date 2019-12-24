@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { User } from 'src/app/model/user';
 
 @Component({
     selector: 'app-new-contact-dialog',
@@ -8,13 +8,17 @@ import { FormControl, Validators } from '@angular/forms';
     styleUrls: ['./new-contact-dialog.component.scss']
 })
 export class NewContactDialogComponent implements OnInit {
-    
-    constructor(private dialogRef: MatDialogRef<NewContactDialogComponent>) { }
 
+
+    constructor(public dialogRef: MatDialogRef<NewContactDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: User) { }
     public ngOnInit() {
-//
+        //
     }
-    public onOkClick():void {
+
+    public onOkClick(): void {
         this.dialogRef.close();
     }
+
+
+
 }

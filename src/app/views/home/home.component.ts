@@ -38,12 +38,15 @@ export class HomeComponent implements OnInit {
     }
 
     public ngOnInit() {
+
     }
 
 
     public save() {
         this.addUser(this.user);
         this.openDialog();
+        console.log('tum data', this.dataStore.users);
+
     }
 
     public addUser(user: User): Promise<User> {
@@ -52,16 +55,21 @@ export class HomeComponent implements OnInit {
         temp_user.password = user.password;
         temp_user.gender = user.gender;
         temp_user.id = this.dataStore.users.length + 1;
+
         return new Promise((resolver, reject) => {
             this.dataStore.users.push(temp_user);
             this._users.next(Object.assign({}, this.dataStore).users);
             resolver(temp_user);
+
         });
     }
-
     public openDialog(): void {
+        let temp_data: User;
+        temp_data = this.dataStore.users[this.dataStore.users.length - 1];
+        console.log('son data', temp_data);
         const dialogRef = this.dialog.open(NewContactDialogComponent, {
-            width: '250px'
+            width: '250px',
+            data: temp_data
         });
         dialogRef.afterClosed().subscribe();
     }
