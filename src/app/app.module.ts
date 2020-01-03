@@ -9,6 +9,12 @@ import { HomeModule } from './views/home/home.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UserCardModule } from './views/user-card/user-card.module';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { HomeRoutingModule } from './views/home/home-routing.module';
 
 
 @NgModule({
@@ -23,6 +29,11 @@ import { UserCardModule } from './views/user-card/user-card.module';
         HomeModule,
         CommonModule,
         UserCardModule,
+        AngularFireModule.initializeApp(environment.firebase, 'firstProject'),
+        AngularFirestoreModule,
+        AngularFireAuthModule,
+        AngularFireStorageModule,
+        HomeRoutingModule,
         AppRoutingModule
     ],
     providers: [],

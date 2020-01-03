@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { User } from '../model/user'
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { User } from '../model/user';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { NewContactDialogComponent } from '../components/new-contact-dialog/new-contact-dialog.component';
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,14 @@ export class UserService {
     private dataStore: {
         users: User[];
     };
-    constructor(public dialog: MatDialog) {
+    public itemsCollection: AngularFirestoreCollection<User>;
+    public items: Observable<any[]>;
+    public lastData: User;
+    // public editState: boolean = false;
+    // public itemToEdit: User;
+
+    constructor(public dialog: MatDialog, public afs: AngularFirestore) {
+        this.items = this.afs.collection('userCard').valueChanges({ idField: 'id' });
         this.dataStore = { users: [] };
         this._users = new BehaviorSubject<User[]>([]);
     }
@@ -23,43 +31,47 @@ export class UserService {
         return this._users.asObservable();
     }
 
-    public userById(id: number) {
-        console.log(this.dataStore.users);
-        return this.dataStore.users.find((x) => x.id === id);
+    public getItems() {
+        return this.items;
     }
 
-    public loadAll() {
-        return this._users
-            .subscribe((data) => {
-                this.dataStore.users = data;
-                this._users.next(Object.assign({}, this.dataStore).users);
-            },
-                (error) => {
-                    console.log('Failed to fetch users');
-                });
+    public userById(id: string): Observable<User> {
+        return this.afs.doc<User>('userCard/' + id).valueChanges();
     }
-    public addUser(user: User): Promise<User> {
-        let temp_user = new User();
-        temp_user.name = user.name;
-        temp_user.password = user.password;
-        temp_user.gender = user.gender;
-        temp_user.id = this.dataStore.users.length + 1;
 
-        return new Promise((resolver, reject) => {
-            this.dataStore.users.push(temp_user);
-            this._users.next(Object.assign({}, this.dataStore).users);
-            resolver(temp_user);
-        });
+    public addUser(user: User) {
+        const id = this.afs.createId();
+        this.afs.collection('userCard').doc(id).set(Object.assign({}, user)).then();
     }
-    public openDialog(): void {
-        let temp_data: User;
-        temp_data = this.dataStore.users[this.dataStore.users.length - 1];
-        console.log('son data', temp_data);
-        const dialogRef = this.dialog.open(NewContactDialogComponent, {
-            width: '250px',
-            data: temp_data
-        });
-        dialogRef.afterClosed().subscribe();
+
+    public deleteUserById(userId: string) {
+        console.log(userId);
+        this.afs.doc<User>('userCard/' + userId).delete().then();
     }
+    public updateUserById(userId: string) {
+        return this.afs.collection('userCard').doc(userId).set({ completed: true }, { merge: true }).then();
+    }
+    // public editItem(event,item){
+    //     this.editState=true;
+    //     this.itemToEdit=item;
+
+    // }
+
+
+    // public openDialog(): void {
+    //     this.getItems().subscribe(data => {
+    //         this.lastData = data[data.length - 1];
+    //         console.log(this.lastData);
+    //     });
+    //     // let tempData: User;
+    //     // tempData = this.dataStore.users[this.dataStore.users.length - 1];
+    //     // console.log('son data', tempData);
+    //     const dialogRef = this.dialog.open(NewContactDialogComponent, {
+    //         width: '250px',
+    //         data: this.lastData
+    //     });
+    //     dialogRef.afterClosed().subscribe();
+    // }
+
 }
 

@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf='show'>
     <mat-card class="example-card">
         <mat-card-header>
             <mat-card-title>
@@ -13,3 +13,7 @@
         </mat-card-header>
     </mat-card>
 </mat-card>
+<div class="example-button-row delete-user">
+    <button (click)="deleteUser()" mat-raised-button color="warn">DELETE USER</button>
+    <button (click)="updateUser()" mat-raised-button color="primary">UPDATE USER</button>
+</div>

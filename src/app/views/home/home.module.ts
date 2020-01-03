@@ -8,6 +8,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NewContactDialogComponent } from 'src/app/components/new-contact-dialog/new-contact-dialog.component';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { environment } from 'src/environments/environment';
 @NgModule({
     imports: [
         MaterialModule,
@@ -16,6 +21,10 @@ import { NewContactDialogComponent } from 'src/app/components/new-contact-dialog
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
+        // AngularFireModule.initializeApp(environment.firebase, 'firstProject'),
+        // AngularFirestoreModule,
+        // AngularFireAuthModule,
+        // AngularFireStorageModule,
         HomeRoutingModule
     ],
     declarations: [
