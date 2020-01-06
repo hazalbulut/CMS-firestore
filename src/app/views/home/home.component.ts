@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -14,20 +14,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 
 export class HomeComponent implements OnInit {
-    public userCard: Observable<any[]>;
+    public userCard: Observable<User[]>;
 
-
-    private _users: BehaviorSubject<User[]>;
-
-    private dataStore: {
-        users: User[];
-    };
-
-    get users(): Observable<User[]> {
-        return this._users.asObservable();
-    }
-
-    public selected: 'Female';
+    public selected: string;
     public user: User = new User();
     public userForm = new FormGroup({
         name: new FormControl(''),
@@ -36,17 +25,17 @@ export class HomeComponent implements OnInit {
     });
 
     constructor(public dialog: MatDialog, public userService: UserService, db: AngularFirestore) {
-        this.userCard = db.collection('userCard').valueChanges();
+        this.userCard = db.collection<User>('userCard').valueChanges();
     }
 
     public ngOnInit() {
         //
     }
 
-
-    public onSubmit() {
+    public onSubmit(): void {
         this.userService.addUser(this.user);
-        // this.userService.openDialog();
+        this.userService.openDialog(this.user);
+
 
     }
 }

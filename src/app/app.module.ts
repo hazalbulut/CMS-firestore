@@ -12,8 +12,6 @@ import { UserCardModule } from './views/user-card/user-card.module';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 import { HomeRoutingModule } from './views/home/home-routing.module';
 
 
@@ -31,8 +29,6 @@ import { HomeRoutingModule } from './views/home/home-routing.module';
         UserCardModule,
         AngularFireModule.initializeApp(environment.firebase, 'firstProject'),
         AngularFirestoreModule,
-        AngularFireAuthModule,
-        AngularFireStorageModule,
         HomeRoutingModule,
         AppRoutingModule
     ],

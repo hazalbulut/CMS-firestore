@@ -1,13 +1,14 @@
 .delete-user{
-margin-top: 2rem;
-margin-left: 2rem;
+    margin-top: 2rem;
+    margin-left: 2rem;
 }
+
 .user-container {
     display: flex;
     flex-direction: column;
     padding-left: 3rem;
-  }
+}
 
-  .user-container > * {
-    width: 100%;
-  }
+.user-card-button {
+    margin-left:2rem;
+}

@@ -1,26 +1,29 @@
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container class="app-container">
 
     <mat-sidenav #side opened [mode]="checkMode">
 
-        <mat-toolbar>Contacts</mat-toolbar>
-        <mat-nav-list>
-            <mat-list-item *ngFor="let user of userData">
-                <a matLine routerLink="user-card/{{user.id}}"> {{user.name}}</a>
-            </mat-list-item>
+        <mat-toolbar color="primary">Contacts</mat-toolbar>
+        <mat-nav-list class="sidenav-name-area">
+            <ng-container *ngFor="let user of userData">
+                <a title="{{user.name}}" matLine routerLink="user-card/{{user.id}}">
+                    <mat-list-item>
+                        {{user.name}}
+                    </mat-list-item>
+                </a>
+            </ng-container>
+
         </mat-nav-list>
     </mat-sidenav>
 
-    <div class="example-sidenav-content">
+    <div class="app-sidenav-content">
         <div class="toolbar-header">
-            <mat-toolbar>Tiko </mat-toolbar>
+            <mat-toolbar color="primary">
+                <span class="toolbar-main-title">Tiko</span></mat-toolbar>
             <button type="button" mat-button routerLink="/">
-                Kişi ekle
+                Add User
             </button>
         </div>
-
-
         <router-outlet></router-outlet>
-
         <button type="button" mat-button (click)="side.toggle()">
             Toggle sidenav
         </button>

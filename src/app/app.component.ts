@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { UserService } from './services/user.service';
-import { Observable } from 'rxjs';
 import { User } from './model/user';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 const SMALL_WIDTH_BREAKPOINT = 720;
 
 @Component({
@@ -10,14 +10,14 @@ const SMALL_WIDTH_BREAKPOINT = 720;
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
     private mediaMatcher: MediaQueryList = matchMedia(`(max-width:${SMALL_WIDTH_BREAKPOINT}px)`);
 
-    public title = 'demoCms2';
-    public showFiller = false;
-    public checkMode: string;
+    public title = 'demoCms';
+    public checkMode: string = 'side';
     public userData: User[];
-    constructor(zone: NgZone, private router: Router, private userService: UserService) {
+    private unsubscribe: Subject<void> = new Subject();
+    constructor(zone: NgZone, private userService: UserService) {
 
         this.mediaMatcher.addListener(mql =>
             zone.run(() => this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)));
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     @Input() public mode;
 
     public ngOnInit() {
-        this.userService.getItems().subscribe((fireData) => {
+        this.userService.getItems().pipe(takeUntil(this.unsubscribe)).subscribe((fireData) => {
             this.userData = fireData;
         });
 
@@ -36,8 +36,12 @@ export class AppComponent implements OnInit {
             this.checkMode = 'side';
         }
     }
-    public isScreenSmall() {
+    public isScreenSmall(): boolean {
         return this.mediaMatcher.matches;
+    }
+    public ngOnDestroy() {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
 

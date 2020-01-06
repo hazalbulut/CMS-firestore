@@ -1,6 +1,6 @@
 <div *ngIf="!isUpdate">
     <mat-card *ngIf='show '>
-        <mat-card class="example-card">
+        <mat-card>
             <mat-card-header>
                 <mat-card-title>
                     Name: {{ user.name }}
@@ -14,9 +14,10 @@
             </mat-card-header>
         </mat-card>
     </mat-card>
-    <div class="example-button-row delete-user">
-        <button (click)="deleteUser()" mat-raised-button color="warn">DELETE USER</button>
-        <button (click)="showUpdateSection()" mat-raised-button color="primary">UPDATE USER</button>
+    <div class="delete-user">
+        <button class="user-card-button" (click)="deleteUser()" mat-raised-button color="warn">DELETE USER</button>
+        <button class="user-card-button" (click)="showUpdateSection()" mat-raised-button color="primary">UPDATE
+            USER</button>
     </div>
 </div>
 <div *ngIf="isUpdate">
@@ -40,6 +41,4 @@
         <button type="submit" mat-button color="primary" [disabled]="!userForm.valid"> Update
         </button>
     </form>
-
-
 </div>
