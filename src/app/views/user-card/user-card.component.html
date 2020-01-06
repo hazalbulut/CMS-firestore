@@ -1,19 +1,45 @@
-<mat-card *ngIf='show'>
-    <mat-card class="example-card">
-        <mat-card-header>
-            <mat-card-title>
-                Name: {{ user.name }}
-            </mat-card-title>
-            <mat-card-title>
-                Password: {{ user.password }}
-            </mat-card-title>
-            <mat-card-title>
-                Gender: {{ user.gender  }}
-            </mat-card-title>
-        </mat-card-header>
+<div *ngIf="!isUpdate">
+    <mat-card *ngIf='show '>
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>
+                    Name: {{ user.name }}
+                </mat-card-title>
+                <mat-card-title>
+                    Password: {{ user.password }}
+                </mat-card-title>
+                <mat-card-title>
+                    Gender: {{ user.gender  }}
+                </mat-card-title>
+            </mat-card-header>
+        </mat-card>
     </mat-card>
-</mat-card>
-<div class="example-button-row delete-user">
-    <button (click)="deleteUser()" mat-raised-button color="warn">DELETE USER</button>
-    <button (click)="updateUser()" mat-raised-button color="primary">UPDATE USER</button>
+    <div class="example-button-row delete-user">
+        <button (click)="deleteUser()" mat-raised-button color="warn">DELETE USER</button>
+        <button (click)="showUpdateSection()" mat-raised-button color="primary">UPDATE USER</button>
+    </div>
+</div>
+<div *ngIf="isUpdate">
+    <form [formGroup]="userForm" class="user-container" (ngSubmit)="updateUser(user)" *ngIf='show'>
+        <mat-form-field>
+            <input formControlName="name" matInput placeholder="Name" [(ngModel)]="user.name" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="password" matInput placeholder="Password" [(ngModel)]="user.password" required />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select formControlName="gender" [(value)]="selected" [(ngModel)]="user.gender" placeholder="Gender">
+                <mat-option>I don't want say</mat-option>
+                <mat-option value="female">Female</mat-option>
+                <mat-option value="male">Male</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button type="submit" mat-button color="primary" [disabled]="!userForm.valid"> Update
+        </button>
+    </form>
+
+
 </div>

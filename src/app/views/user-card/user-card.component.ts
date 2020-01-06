@@ -3,6 +3,7 @@ import { User } from 'src/app/model/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-user-card',
@@ -12,8 +13,16 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class UserCardComponent implements OnInit {
 
     public user: User;
+    public updatedUser: User;
     public show: boolean;
     public urlId: string;
+    public selected: string = 'Female';
+    public isUpdate: boolean = false;
+    public userForm = new FormGroup({
+        name: new FormControl(''),
+        password: new FormControl(''),
+        gender: new FormControl('')
+    });
 
     constructor(private router: Router, private route: ActivatedRoute, private userService: UserService) { }
     public ngOnInit() {
@@ -32,8 +41,13 @@ export class UserCardComponent implements OnInit {
         this.userService.deleteUserById(this.urlId);
         this.router.navigate(['/']);
     }
-    public updateUser() {
-        this.userService.updateUserById(this.urlId);
+    public showUpdateSection() {
+        this.isUpdate = true;
+    }
+
+    public updateUser(user: User) {
+        this.userService.updateUserById(this.urlId, user);
+        this.isUpdate = false;
     }
 
 }

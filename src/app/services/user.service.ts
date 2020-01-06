@@ -48,15 +48,9 @@ export class UserService {
         console.log(userId);
         this.afs.doc<User>('userCard/' + userId).delete().then();
     }
-    public updateUserById(userId: string) {
-        return this.afs.collection('userCard').doc(userId).set({ completed: true }, { merge: true }).then();
+    public updateUserById(userId: string, value: User) {
+        return this.afs.doc<User>('userCard/' + userId).update(value).then();
     }
-    // public editItem(event,item){
-    //     this.editState=true;
-    //     this.itemToEdit=item;
-
-    // }
-
 
     // public openDialog(): void {
     //     this.getItems().subscribe(data => {
