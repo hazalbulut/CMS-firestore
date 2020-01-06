@@ -6,7 +6,7 @@
         <mat-nav-list class="sidenav-name-area">
             <ng-container *ngFor="let user of userData">
                 <a title="{{user.name}}" matLine routerLink="user-card/{{user.id}}">
-                    <mat-list-item>
+                    <mat-list-item routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
                         {{user.name}}
                     </mat-list-item>
                 </a>

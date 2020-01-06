@@ -24,6 +24,8 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     @Input() public mode;
+    @Input() public routerLinkActive: string | string[];
+    @Input() public routerLinkActiveOptions: { exact: boolean };
 
     public ngOnInit() {
         this.userService.getItems().pipe(takeUntil(this.unsubscribe)).subscribe((fireData) => {

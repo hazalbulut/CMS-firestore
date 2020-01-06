@@ -9,7 +9,7 @@
 
     <mat-form-field>
         <mat-select formControlName="gender" [(value)]="selected" [(ngModel)]="user.gender" placeholder="Gender">
-            <mat-option>I don't want say</mat-option>
+            <mat-option value="unspecified">I don't want say</mat-option>
             <mat-option value="female">Female</mat-option>
             <mat-option value="male">Male</mat-option>
         </mat-select>
