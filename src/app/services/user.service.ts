@@ -24,7 +24,7 @@ export class UserService {
 
     public addUser(user: User): void {
         const id = this.afs.createId();
-        this.afs.collection('userCard').doc(id).set(Object.assign({}, user)).then();
+        this.afs.collection<User>('userCard').doc(id).set(Object.assign({}, user)).then();
     }
 
     public deleteUserById(userId: string): void {
