@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormControl, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -27,16 +27,19 @@ export class UserCardComponent implements OnInit, OnDestroy {
     constructor(private router: Router, private route: ActivatedRoute, private userService: UserService, private fb: FormBuilder, ) { }
 
     public ngOnInit() {
-        this.getIdFromURL();
+        this.getData();
     }
 
-    public getIdFromURL() {
+    public getData() {
         this.route.params.subscribe((params) => {
             this.urlId = params.id;
-            this.userService.userById(this.urlId).pipe(takeUntil(this.unsubscribe)).subscribe((res) => {
-                this.user = res;
-                this.show = true;
-            });
+            this.getDataById();
+        });
+    }
+    public getDataById() {
+        this.userService.userById(this.urlId).pipe(takeUntil(this.unsubscribe)).subscribe((res) => {
+            this.user = res;
+            this.show = true;
         });
     }
 
