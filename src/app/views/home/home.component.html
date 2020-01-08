@@ -1,14 +1,13 @@
-<form [formGroup]="userForm" class="home-container" (ngSubmit)="onSubmit()">
+<form [formGroup]="userForm" class="home-container" (ngSubmit)="onSubmit(userForm.value)">
     <mat-form-field>
-        <input formControlName="name" matInput placeholder="Name" [(ngModel)]="user.name" required />
+        <input formControlName="name" matInput placeholder="Name" required />
+    </mat-form-field>
+    <mat-form-field>
+        <input formControlName="password" matInput placeholder="Password" required />
     </mat-form-field>
 
     <mat-form-field>
-        <input formControlName="password" matInput placeholder="Password" [(ngModel)]="user.password" required />
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-select formControlName="gender" [(value)]="selected" [(ngModel)]="user.gender" placeholder="Gender">
+        <mat-select formControlName="gender" [(value)]="selected" placeholder="Gender">
             <mat-option value="unspecified">I don't want say</mat-option>
             <mat-option value="female">Female</mat-option>
             <mat-option value="male">Male</mat-option>

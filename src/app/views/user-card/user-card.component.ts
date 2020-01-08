@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,17 +18,19 @@ export class UserCardComponent implements OnInit, OnDestroy {
     public urlId: string;
     public selected: string;
     public isUpdate: boolean = false;
-    public userForm = new FormGroup({
+    public userForm = this.fb.group({
         name: new FormControl(''),
         password: new FormControl(''),
         gender: new FormControl('')
     });
 
-    constructor(private router: Router, private route: ActivatedRoute, private userService: UserService) { }
+    constructor(private router: Router, private route: ActivatedRoute, private userService: UserService, private fb: FormBuilder, ) { }
+
     public ngOnInit() {
-        this.shotIdFromURL();
+        this.getIdFromURL();
     }
-    public shotIdFromURL() {
+
+    public getIdFromURL() {
         this.route.params.subscribe((params) => {
             this.urlId = params.id;
             this.userService.userById(this.urlId).pipe(takeUntil(this.unsubscribe)).subscribe((res) => {
@@ -37,18 +39,21 @@ export class UserCardComponent implements OnInit, OnDestroy {
             });
         });
     }
+
     public deleteUser() {
         this.userService.deleteUserById(this.urlId);
         this.router.navigate(['/']);
     }
+
     public showUpdateSection() {
         this.isUpdate = true;
     }
 
-    public updateUser(user: User) {
-        this.userService.updateUserById(this.urlId, user);
+    public updateUser(formValue: User) {
+        this.userService.updateUserById(this.urlId, formValue);
         this.isUpdate = false;
     }
+
     public ngOnDestroy() {
         this.unsubscribe.next();
         this.unsubscribe.complete();

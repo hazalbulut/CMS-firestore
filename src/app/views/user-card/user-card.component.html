@@ -14,24 +14,26 @@
             </mat-card-header>
         </mat-card>
     </mat-card>
+
     <div class="delete-user">
         <button class="user-card-button" (click)="deleteUser()" mat-raised-button color="warn">DELETE USER</button>
         <button class="user-card-button" (click)="showUpdateSection()" mat-raised-button color="primary">UPDATE
             USER</button>
     </div>
+
 </div>
 <div *ngIf="isUpdate">
-    <form [formGroup]="userForm" class="user-container" (ngSubmit)="updateUser(user)" *ngIf='show'>
+    <form [formGroup]="userForm" class="user-container" (ngSubmit)="updateUser(userForm.value)" *ngIf='show'>
         <mat-form-field>
-            <input formControlName="name" matInput placeholder="Name" [(ngModel)]="user.name" required />
+            <input formControlName="name" matInput placeholder="Name" required />
         </mat-form-field>
 
         <mat-form-field>
-            <input formControlName="password" matInput placeholder="Password" [(ngModel)]="user.password" required />
+            <input formControlName="password" matInput placeholder="Password" required />
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select formControlName="gender" [(value)]="selected" [(ngModel)]="user.gender" placeholder="Gender">
+            <mat-select formControlName="gender" [(value)]="selected" placeholder="Gender">
                 <mat-option>I don't want say</mat-option>
                 <mat-option value="female">Female</mat-option>
                 <mat-option value="male">Male</mat-option>

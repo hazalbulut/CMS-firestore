@@ -6,12 +6,11 @@
         <mat-nav-list class="sidenav-name-area">
             <ng-container *ngFor="let user of userData">
                 <a title="{{user.name}}" matLine routerLink="user-card/{{user.id}}">
-                    <mat-list-item routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-list-item [routerLinkActive]="'active-link'" [routerLinkActiveOptions]="routerOptions">
                         {{user.name}}
                     </mat-list-item>
                 </a>
             </ng-container>
-
         </mat-nav-list>
     </mat-sidenav>
 
@@ -19,7 +18,7 @@
         <div class="toolbar-header">
             <mat-toolbar color="primary">
                 <span class="toolbar-main-title">Tiko</span></mat-toolbar>
-            <button type="button" mat-button routerLink="/">
+            <button type="button" mat-button routerLink="">
                 Add User
             </button>
         </div>

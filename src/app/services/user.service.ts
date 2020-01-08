@@ -9,9 +9,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
     providedIn: 'root'
 })
 export class UserService {
-    public items: Observable<any[]>;
+    public items: Observable<User[]>;
     constructor(public dialog: MatDialog, public afs: AngularFirestore) {
-        this.items = this.afs.collection('userCard', (ref) => ref.orderBy('created')).valueChanges({ idField: 'id' });
+        this.items = this.afs.collection<User>('userCard', (ref) => ref.orderBy('created')).valueChanges({ idField: 'id' });
     }
 
     public getItems(): Observable<User[]> {
@@ -26,7 +26,7 @@ export class UserService {
         const id = this.afs.createId();
         this.afs.collection<User>('userCard').doc(id).set(Object.assign({}, user, {
             created: new Date()
-        }, { merge: true })).then();
+        })).then();
     }
 
     public deleteUserById(userId: string): void {
