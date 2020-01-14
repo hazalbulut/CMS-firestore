@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/model/user';
+import { UserCardFirestore } from 'src/app/services/firestore/user-card.firestore';
 
 @Component({
     selector: 'app-home',
@@ -19,8 +20,9 @@ export class HomeComponent implements OnInit {
         password: new FormControl(''),
         gender: new FormControl('')
     });
+    UserCardFirestore: any;
 
-    constructor(private fb: FormBuilder, public dialog: MatDialog, public userService: UserService) {
+    constructor(private fb: FormBuilder, public dialog: MatDialog, public userCardFirestore: UserCardFirestore) {
         //
     }
 
@@ -29,7 +31,7 @@ export class HomeComponent implements OnInit {
     }
 
     public onSubmit(formValue: User): void {
-        this.userService.addUser(formValue);
-        this.userService.openDialog(formValue);
+        this.userCardFirestore.addUser(formValue);
+        this.userCardFirestore.openDialog(formValue);
     }
 }

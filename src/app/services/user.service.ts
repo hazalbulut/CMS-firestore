@@ -1,43 +1,54 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { NewContactDialogComponent } from '../components/new-contact-dialog/new-contact-dialog.component';
 import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase/app';
 
 @Injectable({
     providedIn: 'root'
 })
-export class UserService {
-    public items: Observable<User[]>;
-    constructor(public dialog: MatDialog, public afs: AngularFirestore) {
-        this.items = this.afs.collection<User>('userCard', (ref) => ref.orderBy('created')).valueChanges({ idField: 'id' });
+export abstract class UserService<T> {
+
+    public get collection() {
+        return this.afs.collection(`${this.basePath}`);
     }
 
-    public getItems(): Observable<User[]> {
+    get serverTimestamp() {
+        return firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    public items: Observable<T[]>;
+    protected abstract basePath: string;
+    constructor(public dialog: MatDialog, @Inject(AngularFirestore) public afs: AngularFirestore) {
+        this.items = this.afs.collection<T>('userCard', (ref) => ref.orderBy('created')).valueChanges({ idField: 'id' });
+    }
+
+    public getItems(): Observable<T[]> {
         return this.items;
     }
 
-    public userById(id: string): Observable<User> {
-        return this.afs.doc<User>('userCard/' + id).valueChanges();
+    public userById(id: string): Observable<T> {
+        return this.afs.doc<T>(`${this.basePath}/${id}`).valueChanges();
     }
 
-    public addUser(user: User): void {
+    public addUser(user: T): void {
         const id = this.afs.createId();
-        this.afs.collection<User>('userCard').doc(id).set(Object.assign({}, user, {
+        this.collection.doc(id).set(Object.assign({}, user, {
             created: new Date()
         })).then();
     }
 
     public deleteUserById(userId: string): void {
-        this.afs.doc<User>('userCard/' + userId).delete().then();
+        this.afs.doc<T>(`${this.basePath}/${userId}`).delete().then();
     }
 
-    public updateUserById(userId: string, value: User): Promise<User> {
-        return this.afs.doc<User>('userCard/' + userId).update(value).then();
+    public updateUserById(userId: string, value: T): Promise<T> {
+        return this.afs.doc<T>(`${this.basePath}/${userId}`).update(value).then();
     }
 
-    public openDialog(user: User): void {
+    public openDialog(user: T): void {
         const dialogRef = this.dialog.open(NewContactDialogComponent, {
             width: '250px',
             data: user

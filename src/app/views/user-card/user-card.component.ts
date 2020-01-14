@@ -5,6 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UserCardFirestore } from 'src/app/services/firestore/user-card.firestore';
 
 @Component({
     selector: 'app-user-card',
@@ -24,7 +25,8 @@ export class UserCardComponent implements OnInit, OnDestroy {
         gender: new FormControl('')
     });
 
-    constructor(private router: Router, private route: ActivatedRoute, private userService: UserService, private fb: FormBuilder, ) { }
+    // tslint:disable-next-line: max-line-length
+    constructor(private router: Router, private route: ActivatedRoute, public userCardFirestore: UserCardFirestore, private fb: FormBuilder) { }
 
     public ngOnInit() {
         this.getData();
@@ -37,14 +39,14 @@ export class UserCardComponent implements OnInit, OnDestroy {
         });
     }
     public getDataById() {
-        this.userService.userById(this.urlId).pipe(takeUntil(this.unsubscribe)).subscribe((res) => {
+        this.userCardFirestore.userById(this.urlId).pipe(takeUntil(this.unsubscribe)).subscribe((res) => {
             this.user = res;
             this.show = true;
         });
     }
 
     public deleteUser() {
-        this.userService.deleteUserById(this.urlId);
+        this.userCardFirestore.deleteUserById(this.urlId);
         this.router.navigate(['/']);
     }
 
@@ -53,7 +55,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
     }
 
     public updateUser(formValue: User) {
-        this.userService.updateUserById(this.urlId, formValue);
+        this.userCardFirestore.updateUserById(this.urlId, formValue);
         this.isUpdate = false;
     }
 

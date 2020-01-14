@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private mediaMatcher: MediaQueryList = matchMedia(`(max-width:${SMALL_WIDTH_BREAKPOINT}px)`);
     private unsubscribe: Subject<void> = new Subject();
 
-    constructor(zone: NgZone, private userService: UserService) {
+    constructor(zone: NgZone, private userService: UserService<User>) {
         this.mediaMatcher.addListener(mql =>
             zone.run(() => this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)));
     }
