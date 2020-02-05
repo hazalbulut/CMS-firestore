@@ -19,7 +19,7 @@ export abstract class UserService<T> {
         return firebase.firestore.FieldValue.serverTimestamp();
     }
     public get orderBySth() {
-        return this.afs.collection<T>(`${this.basePath}`, (ref) => ref.orderBy('created'));
+        return this.afs.collection<T>(`${this.basePath}`, (ref) => ref.orderBy('created')).valueChanges({ idField: 'id' });
     }
 
     constructor(public dialog: MatDialog, @Inject(AngularFirestore) public afs: AngularFirestore) {
@@ -32,7 +32,7 @@ export abstract class UserService<T> {
 
 
     public getItems(): Observable<T[]> {
-        this.items = this.orderBySth.valueChanges({ idField: 'id' });
+        this.items = this.orderBySth;
         return this.items;
     }
 
