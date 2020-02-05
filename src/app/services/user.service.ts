@@ -18,14 +18,21 @@ export abstract class UserService<T> {
     get serverTimestamp() {
         return firebase.firestore.FieldValue.serverTimestamp();
     }
-
-    public items: Observable<T[]>;
-    protected abstract basePath: string;
-    constructor(public dialog: MatDialog, @Inject(AngularFirestore) public afs: AngularFirestore) {
-        this.items = this.afs.collection<T>('userCard', (ref) => ref.orderBy('created')).valueChanges({ idField: 'id' });
+    public get orderBySth() {
+        return this.afs.collection<T>(`${this.basePath}`, (ref) => ref.orderBy('created'));
     }
 
+    constructor(public dialog: MatDialog, @Inject(AngularFirestore) public afs: AngularFirestore) {
+        // this.items = this.afs.collection<T>('userCard', (ref) => ref.orderBy('created')).valueChanges({ idField: 'id' });
+        this.getItems();
+    }
+
+    protected abstract basePath: string;
+    public items: Observable<T[]>;
+
+
     public getItems(): Observable<T[]> {
+        this.items = this.orderBySth.valueChanges({ idField: 'id' });
         return this.items;
     }
 
