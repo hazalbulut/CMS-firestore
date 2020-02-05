@@ -1,5 +1,4 @@
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
-import { UserService } from './services/user.service';
 import { User } from './model/user';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
